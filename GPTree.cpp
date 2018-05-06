@@ -2363,12 +2363,12 @@ struct Wide_KNN_//增量法计算KNN，返回最近邻的K个点在增量序列�
 	}
 }Wide_KNN;
 
-void init()
+void Ans::init()
 {
 	srand(747929791);
 }
 
-void read()
+void Ans::read()
 {
 	printf("begin read\n");
 	FILE *in=NULL;
@@ -2408,7 +2408,7 @@ void read()
 		printf("read over\n");
 	}
 }
-void save()
+void Ans::save()
 {
 	printf("begin save\n");
 	freopen("data/GP_Tree.data","w",stdout);
@@ -2416,7 +2416,7 @@ void save()
 	freopen("/dev/tty","w",stdout);
 	printf("save_over\n");
 }
-void load()
+void Ans::load()
 {
 	freopen("data/GP_Tree.data","r",stdin);
 	tree.load();
