@@ -11,7 +11,7 @@
 #include<queue>
 #include<sys/time.h>
 #include<metis.h>
-
+#include"GPTree.h"
 
 int times[10];//辅助计时变量；
 int cnt_type0,cnt_type1;
@@ -2363,65 +2363,7 @@ struct Wide_KNN_//增量法计算KNN，返回最近邻的K个点在增量序列�
 	}
 }Wide_KNN;
 
-void Ans::init()
-{
-	srand(747929791);
-}
 
-void Ans::read()
-{
-	printf("begin read\n");
-	FILE *in=NULL;
-	in=fopen(Edge_File,"r");
-	cout<<"correct1"<<endl;
-	fscanf(in,"%d %d\n",&G.n,&G.m);
-	cout<<G.n<<" "<<G.m<<endl;
-	cout<<"correct2"<<endl;
-	G.init(G.n,G.m);
-	for(int i=0;i<G.n;i++)G.id[i]=i;
-	cout<<"correct3"<<endl;
-	int i,j,k,l;
-	for(i=0;i<G.m;i++)//读取边
-	{
-		//int temp;
-		fscanf(in,"%d %d %d\n",&j,&k,&l);
-		if(RevE==false)  G.add_D(j, k, l);  //G.add_D(j-1,k-1,l);//单向边
-		else G.add(j, k, l); //G.add(j-1,k-1,l);//双向边
-	}
-	cout<<"correct4"<<endl;
-	fclose(in);
-	if(Optimization_Euclidean_Cut)
-	{
-		in=fopen(Node_File,"r");
-		cout<<"correct1"<<endl;
-		cout<<"correct2"<<endl;
-		cout<<"correct3"<<endl;
-		double d1,d2;
-		for(i=0;i<G.n;i++)//读取边
-		{
-			//int temp;
-			fscanf(in,"%d %lf %lf\n",&j,&d1,&d2);
-			coordinate.push_back(coor(d1,d2));
-		}
-		cout<<"correct4"<<endl;
-		fclose(in);
-		printf("read over\n");
-	}
-}
-void Ans::save()
-{
-	printf("begin save\n");
-	freopen("data/GP_Tree.data","w",stdout);
-	tree.save();
-	freopen("/dev/tty","w",stdout);
-	printf("save_over\n");
-}
-void Ans::load()
-{
-	freopen("data/GP_Tree.data","r",stdin);
-	tree.load();
-	freopen("/dev/tty","r",stdin);
-} 
 
 class Global_Scheduling//依托于G_Tree的全局调度算法，主要处理拼车的哈密顿路径规划
 {
@@ -2662,7 +2604,71 @@ class Global_Scheduling//依托于G_Tree的全局调度算法，主要处理拼�
 		vector<vehicle>cars;
 }scheduling;
 
+void Ans::init()
+{
+	srand(747929791);
+}
 
+void Ans::read()
+{
+	printf("begin read\n");
+	FILE *in=NULL;
+	in=fopen(Edge_File,"r");
+	cout<<"correct1"<<endl;
+	fscanf(in,"%d %d\n",&G.n,&G.m);
+	cout<<G.n<<" "<<G.m<<endl;
+	cout<<"correct2"<<endl;
+	G.init(G.n,G.m);
+	for(int i=0;i<G.n;i++)G.id[i]=i;
+	cout<<"correct3"<<endl;
+	int i,j,k,l;
+	for(i=0;i<G.m;i++)//读取边
+	{
+		//int temp;
+		fscanf(in,"%d %d %d\n",&j,&k,&l);
+		if(RevE==false)  G.add_D(j, k, l);  //G.add_D(j-1,k-1,l);//单向边
+		else G.add(j, k, l); //G.add(j-1,k-1,l);//双向边
+	}
+	cout<<"correct4"<<endl;
+	fclose(in);
+	if(Optimization_Euclidean_Cut)
+	{
+		in=fopen(Node_File,"r");
+		cout<<"correct1"<<endl;
+		cout<<"correct2"<<endl;
+		cout<<"correct3"<<endl;
+		double d1,d2;
+		for(i=0;i<G.n;i++)//读取边
+		{
+			//int temp;
+			fscanf(in,"%d %lf %lf\n",&j,&d1,&d2);
+			coordinate.push_back(coor(d1,d2));
+		}
+		cout<<"correct4"<<endl;
+		fclose(in);
+		printf("read over\n");
+	}
+}
+void Ans::save()
+{
+	printf("begin save\n");
+	freopen("data/GP_Tree.data","w",stdout);
+	tree.save();
+	freopen("/dev/tty","w",stdout);
+	printf("save_over\n");
+}
+void Ans::load()
+{
+	freopen("data/GP_Tree.data","r",stdin);
+	tree.load();
+	freopen("/dev/tty","r",stdin);
+} 
+
+
+void Ans::build_tree()
+{
+	
+}
 
 /*int main()
 {

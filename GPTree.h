@@ -9,6 +9,7 @@ public:
 	void read();
 	void save();
 	void load();
+	void build_tree();
 
 };
 #endif
