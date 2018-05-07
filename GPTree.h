@@ -11,5 +11,7 @@ public:
 	void load();
 	void build_tree();
 
+	int get_min_distance(int S, int T);
+
 };
 #endif

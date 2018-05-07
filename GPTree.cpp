@@ -2606,7 +2606,7 @@ class Global_Scheduling//依托于G_Tree的全局调度算法，主要处理拼�
 
 void Ans::init()
 {
-	srand(747929791);
+	srand(747929791);  ///????????????
 }
 
 void Ans::read()
@@ -2614,10 +2614,11 @@ void Ans::read()
 	printf("begin read\n");
 	FILE *in=NULL;
 	in=fopen(Edge_File,"r");
-	cout<<"correct1"<<endl;
+	cout << "correct1" << endl;
 	fscanf(in,"%d %d\n",&G.n,&G.m);
-	cout<<G.n<<" "<<G.m<<endl;
-	cout<<"correct2"<<endl;
+	cout << G.n << " " << G.m << endl;
+	cout << "correct2" << endl;
+	
 	G.init(G.n,G.m);
 	for(int i=0;i<G.n;i++)G.id[i]=i;
 	cout<<"correct3"<<endl;
@@ -2631,6 +2632,9 @@ void Ans::read()
 	}
 	cout<<"correct4"<<endl;
 	fclose(in);
+	
+	
+	// 无事发生
 	if(Optimization_Euclidean_Cut)
 	{
 		in=fopen(Node_File,"r");
@@ -2667,7 +2671,14 @@ void Ans::load()
 
 void Ans::build_tree()
 {
-	
+	Additional_Memory=2*G.n*log2(G.n);
+	printf("G.real_border:%d\n",G.real_node());
+	tree.build();
+}
+
+int Ans::get_min_distance(int S, int T)
+{
+	return tree.search_catch(S, T);
 }
 
 /*int main()
