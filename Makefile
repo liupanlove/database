@@ -1,15 +1,13 @@
 CXX=g++
-CXXFLAGS=-std=c++11 -Wall -O3 -MMD -MP -lmetis
+CXXFLAGS= -O3 -lmetis
 TARGET=main
 
 SRC=$(shell ls *.cpp)
 
 all: $(TARGET)
 
-$(TARGET): $(SRC:.cpp=.o)
-	$(CXX) $(CXXFLAGS) $+ -o $@
-
--include $(SRC:.cpp=.d)
+$(TARGET): $(SRC)
+	$(CXX) $+ -o $@ $(CXXFLAGS)
 
 clean:
 	$(RM) *.o *.d $(TARGET)

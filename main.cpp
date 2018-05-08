@@ -2,6 +2,9 @@
 #include<iostream>
 #include"car.h"
 #include<fstream>
+#include<cstring>
+#include<cstdlib>
+
 using namespace std;
 
 Ans ans;
@@ -37,8 +40,8 @@ void init()
 void read_cars()
 {
 	ifstream fin("data/car.txt");
-
-	while(!fin.eof())
+	//while(!fin.eof())
+	for(int i = 0; i < 100000; ++i)
 	{
 		Car car;
 
@@ -46,11 +49,12 @@ void read_cars()
 		string str;
 		fin >> tmp >> car.num; // >> tmp1 >> tmp2;
 		fin >> str;
-		car.position = atoi(split_string(str, ","));
-		for(int i = 0; i < car.num; ++i)
+		car.position = atoi(split_string(str, ",").c_str());
+
+		for(int j = 0; j < car.num; ++j)
 		{
 			fin >> str;
-			int tmp = atoi(split_string(str, ","));
+			int tmp = atoi(split_string(str, ",").c_str());
 
 			car.passenger.push_back(tmp);
 		}
@@ -64,6 +68,7 @@ void print_cars()
 {
 	for(int i = 0; i < cars.size(); ++i)
 	{
+		cout << i << " ";
 		cout << cars[i].position << " " << cars[i].num << " ";
 
 		for(int j = 0; j < cars[i].num; ++j)
