@@ -13,5 +13,7 @@ public:
 
 	int get_min_distance(int S, int T);
 
+	void test();
+
 };
 #endif

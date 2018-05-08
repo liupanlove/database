@@ -83,11 +83,18 @@ void print_cars()
 int main()
 {
 	//Ans ans;
-	//ans.init();
-	//ans.read();
+	ans.init();
+	ans.load();
+	/*ans.read();
 
+	ans.build_tree();*/
+
+	//ans.save();
 	read_cars();
 
 	print_cars();
+	
+	ans.test();
+	
 	return 0;
 }

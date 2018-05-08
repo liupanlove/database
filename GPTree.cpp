@@ -2681,6 +2681,23 @@ int Ans::get_min_distance(int S, int T)
 	return tree.search_catch(S, T);
 }
 
+
+void Ans::test()
+{
+	cout << "test begin" << endl;
+	TIME_TICK_START
+	for(int i = 0; i < 100000; ++i)
+	{
+		int S = rand() % G.n;
+		int T = rand() % G.n;
+		//int dis = tree.search_catch(S,T);
+		int dis = tree.search(S, T);
+	}
+	TIME_TICK_END
+    	TIME_TICK_PRINT("p2p-SEARCH:")
+
+	
+}
 /*int main()
 {
 	TIME_TICK_START
