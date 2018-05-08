@@ -24,7 +24,7 @@ const bool Optimization_Euclidean_Cut=false;//是否开启Catch查询中基于�
 const char Edge_File[]="data/road.nedge";//第一行两个整数n,m表示点数和边数，接下来m行每行三个整数U,V,C表示U->V有一条长度为C的边
 const char Node_File[]="data/road.cnode";//共N行每行一个整数两个实数id,x,y表示id结点的经纬度(但输入不考虑id，只顺序从0读到n-1，整数N在Edge文件里)
 const int Global_Scheduling_Cars_Per_Request=30000000;//每次规划精确计算前至多保留的车辆数目(时间开销)
-const double Unit=0.1;//路网文件的单位长度/m
+const double Unit = 1; //0.1;//路网文件的单位长度/m
 const double R_earth=6371000.0;//地球半径，用于输入经纬度转化为x,y坐标
 const double PI=acos(-1.0);
 const int Partition_Part=4;//K叉树
@@ -35,11 +35,8 @@ const bool RevE=true;//false代表有向图，true代表无向图读入边复制
 const bool Distance_Offset=false;//KNN是否考虑车辆距离结点的修正距离
 const bool DEBUG1=false;
 
-#define TIME_TICK_START gettimeofday( &tv, NULL ); ts = tv.tv_sec * 100000 + tv.tv_usec / 10;
-#define TIME_TICK_END gettimeofday( &tv, NULL ); te = tv.tv_sec * 100000 + tv.tv_usec / 10;
-#define TIME_TICK_PRINT(T) printf("%s RESULT: %lld (0.01MS)\r\n", (#T), te - ts );
-struct timeval tv;
-long long ts, te;
+
+
 static int rootp = 0;
 struct Heap//双指针大根堆
 {
@@ -2635,23 +2632,43 @@ void Ans::read()
 	
 	
 	// 无事发生
-	if(Optimization_Euclidean_Cut)
+	//if(Optimization_Euclidean_Cut)
+	//{
+	/*in=fopen(Node_File,"r");
+	cout<<"correct1"<<endl;
+	cout<<"correct2"<<endl;
+	cout<<"correct3"<<endl;
+	double d1,d2;
+	for(i=0;i<G.n;i++)//读取边
 	{
-		in=fopen(Node_File,"r");
-		cout<<"correct1"<<endl;
-		cout<<"correct2"<<endl;
-		cout<<"correct3"<<endl;
-		double d1,d2;
-		for(i=0;i<G.n;i++)//读取边
-		{
-			//int temp;
-			fscanf(in,"%d %lf %lf\n",&j,&d1,&d2);
-			coordinate.push_back(coor(d1,d2));
-		}
-		cout<<"correct4"<<endl;
-		fclose(in);
-		printf("read over\n");
+		//int temp;
+		fscanf(in,"%d %lf %lf\n",&j,&d1,&d2);
+		coordinate.push_back(coor(d1,d2));
 	}
+	cout<<"correct4"<<endl;
+	fclose(in);
+	printf("read over\n");*/
+	//}
+	read_node();
+}
+
+void Ans::read_node()
+{
+	FILE * in=fopen(Node_File,"r");
+	cout<<"correct1"<<endl;
+	cout<<"correct2"<<endl;
+	cout<<"correct3"<<endl;
+	double d1,d2;
+	int j;
+	for(int i=0;i<G.n;i++)//读取边
+	{
+		//int temp;
+		fscanf(in,"%d %lf %lf\n",&j,&d1,&d2);
+		coordinate.push_back(coor(d1,d2));
+	}
+	cout<<"correct4"<<endl;
+	fclose(in);
+	printf("read over\n");
 }
 void Ans::save()
 {
@@ -2666,6 +2683,9 @@ void Ans::load()
 	freopen("data/GP_Tree.data","r",stdin);
 	tree.load();
 	freopen("/dev/tty","r",stdin);
+
+	read_node();
+	//cout << coordinate.size();
 } 
 
 
@@ -2682,7 +2702,12 @@ int Ans::get_min_distance(int S, int T)
 }
 
 
-void Ans::test()
+void Ans::output()
+{
+	for(int i = 0; i < coordinate.size(); ++i)
+		cout << i << " " << coordinate[i].x << " " << coordinate[i].y << endl; 
+}
+/*void Ans::test()
 {
 	cout << "test begin" << endl;
 	TIME_TICK_START
@@ -2697,7 +2722,7 @@ void Ans::test()
     	TIME_TICK_PRINT("p2p-SEARCH:")
 
 	
-}
+}*/
 /*int main()
 {
 	TIME_TICK_START

@@ -7,6 +7,15 @@
 
 using namespace std;
 
+
+#define TIME_TICK_START gettimeofday( &tv, NULL ); ts = tv.tv_sec * 100000 + tv.tv_usec / 10;
+#define TIME_TICK_END gettimeofday( &tv, NULL ); te = tv.tv_sec * 100000 + tv.tv_usec / 10;
+#define TIME_TICK_PRINT(T) printf("%s RESULT: %lld (0.01MS)\r\n", (#T), te - ts );
+
+
+struct timeval tv;
+long long ts, te;
+
 Ans ans;
 
 vector<Car> cars;
@@ -79,22 +88,124 @@ void print_cars()
 	}
 }
 
+bool is_access[5];
+int min_distance;
+vector<int> positions;
+
+void calculate_distance(vector<int> &destinations, int car_position, int num)
+{
+	if(num == 0)
+	{
+		for(int i = 0; i < 5; ++i) is_access[i] = false;
+		min_distance = 2147483647;
+		positions.clear();
+
+	}
+	if(num == destinations.size())
+	{
+		int curr = car_position;
+		int distance = 0;
+
+		for(int i = 0; i < positions.size(); ++i)
+		{
+			//cout << positions[i] << " ";
+			distance += ans.get_min_distance(curr, destinations[positions[i]]);
+			curr = destinations[positions[i]];
+		}
+		//out << endl;
+
+		if(distance < min_distance) min_distance = distance;
+	}
+	else
+	{
+		for(int i = 0; i < destinations.size(); ++i)
+		{
+			if(!is_access[i])
+			{
+				positions.push_back(i);
+				is_access[i] = true;
+				calculate_distance(destinations, car_position, num + 1);
+
+				is_access[i] = false;
+				positions.pop_back();
+			}
+		}
+	}
+
+}
 
 int main()
 {
+	int current_position, destination; // node No
 	//Ans ans;
-	ans.init();
+	//ans.init();
 	ans.load();
-	/*ans.read();
+	//ans.read();
 
-	ans.build_tree();*/
+	//ans.build_tree();
 
-	//ans.save();
+	///ans.save();
 	read_cars();
 
-	print_cars();
 	
-	ans.test();
+
+	//print_cars();
+
+	//ans.output();
+	
+	cout << "please input your position: ";
+	cin >> current_position;
+	cout << "please input your destination: ";
+	cin >> destination;
+
+	//cout << Euclidean_Dist(S, T) << endl;
+
+	//TIME_TICK_START
+
+	int cnt = 0;
+	for(int i = 0; i < 100000; ++i)
+	{
+		//cout << cars[i].position << " " << pos << endl;
+		double distance = Euclidean_Dist(cars[i].position, current_position);
+		if(distance < 11000)
+		{
+			//cout << i << endl;
+			cnt ++;
+			if(cars[i].num < 4)  // 
+			{
+				int D2 = ans.get_min_distance(cars[i].position, current_position);
+				int D4 = ans.get_min_distance(current_position, destination);
+				
+				cars[i].passenger.push_back(destination);
+
+
+				//cout << cars[i].num << endl;
+				calculate_distance(cars[i].passenger, cars[i].position, 0);
+				int D3 = min_distance;
+				if(D3 - D4 > 10000) continue;
+
+				cars[i].passenger.pop_back();
+
+				calculate_distance(cars[i].passenger, cars[i].position, 0);
+
+				int D1 = min_distance;
+				if(D2 + D3 - D1 > 10000) continue;
+
+				cout << i << endl;
+
+				
+				///cout << "min_distance = " << min_distance << endl;
+				//if(cnt > 10) return 0;
+			}
+
+
+		}
+	}
+	cout << cnt << endl;
+	//TIME_TICK_END
+	//TIME_TICK_PRINT("haipa");
+
+	//ans.test();
 	
 	return 0;
 }
