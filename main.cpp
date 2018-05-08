@@ -16,6 +16,8 @@ using namespace std;
 struct timeval tv;
 long long ts, te;
 
+vector<vector<int>> permutations[5]; //全排列
+
 Ans ans;
 
 vector<Car> cars;
@@ -40,9 +42,47 @@ string split_string(const string& s, const string& c)
 
 void init()
 {
-	ans.init();
-	ans.read();
-	ans.build_tree();
+	//ans.init();
+	//ans.read();
+	//ans.build_tree();
+	ans.load();
+
+	for(int i = 0; i < 5; ++i)	build_permutations(0, i);
+}
+
+bool is_access[5];
+int min_distance;
+vector<int> positions;
+
+void build_permutations(int num, int max)
+{
+	if(num == 0)
+	{
+		for(int i = 0; i < 5; ++i) is_access[i] = false;
+		positions.clear();
+
+	}
+	if(num == max)
+	{
+		vector<int> tmp = points;
+		permutations[max].push_back(tmp);
+
+	}
+	else
+	{
+		for(int i = 0; i < destinations.size(); ++i)
+		{
+			if(!is_access[i])
+			{
+				positions.push_back(i);
+				is_access[i] = true;
+				build_permutations(num + 1, max);
+
+				is_access[i] = false;
+				positions.pop_back();
+			}
+		}
+	}
 
 }
 
@@ -88,11 +128,9 @@ void print_cars()
 	}
 }
 
-bool is_access[5];
-int min_distance;
-vector<int> positions;
 
-void calculate_distance(vector<int> &destinations, int car_position, int num)
+
+/*void calculate_distance(vector<int> &destinations, int car_position, int num)
 {
 	if(num == 0)
 	{
@@ -132,15 +170,16 @@ void calculate_distance(vector<int> &destinations, int car_position, int num)
 		}
 	}
 
-}
+}*/
 
 int main()
 {
 	int current_position, destination; // node No
 	//Ans ans;
 	//ans.init();
-	ans.load();
+	//ans.load();
 	//ans.read();
+	init();
 
 	//ans.build_tree();
 
@@ -158,11 +197,22 @@ int main()
 	cout << "please input your destination: ";
 	cin >> destination;
 
+	for(int i = 0; i < 5; ++i)
+	{
+		cout << i << endl;
+		for(int j = 0; j < permutations[i].size(); ++j)
+		{
+			for(int k = 0; k < permutations[i][j].size(); ++k)
+				cout << permutations[i][j][k] << " "
+			cout << endl;
+		}
+	}
 	//cout << Euclidean_Dist(S, T) << endl;
 
 	//TIME_TICK_START
 
-	int cnt = 0;
+	
+	/*int cnt = 0;
 	for(int i = 0; i < 100000; ++i)
 	{
 		//cout << cars[i].position << " " << pos << endl;
@@ -201,7 +251,7 @@ int main()
 
 		}
 	}
-	cout << cnt << endl;
+	cout << cnt << endl;*/
 	//TIME_TICK_END
 	//TIME_TICK_PRINT("haipa");
 
