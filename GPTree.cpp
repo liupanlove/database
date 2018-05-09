@@ -20,7 +20,7 @@ using namespace std;
 const bool DEBUG_=false;
 const bool Optimization_G_tree_Search=true;//是否开启全连接加速算法
 const bool Optimization_KNN_Cut=true;//是否开启KNN剪枝查询算法
-const bool Optimization_Euclidean_Cut=false;//是否开启Catch查询中基于欧几里得距离剪枝算法
+const bool Optimization_Euclidean_Cut=false;//是否开启Catch查询中基于欧几里得距离剪枝算法  // test
 const char Edge_File[]="data/road.nedge";//第一行两个整数n,m表示点数和边数，接下来m行每行三个整数U,V,C表示U->V有一条长度为C的边
 const char Node_File[]="data/road.cnode";//共N行每行一个整数两个实数id,x,y表示id结点的经纬度(但输入不考虑id，只顺序从0读到n-1，整数N在Edge文件里)
 const int Global_Scheduling_Cars_Per_Request=30000000;//每次规划精确计算前至多保留的车辆数目(时间开销)
@@ -2698,7 +2698,7 @@ void Ans::build_tree()
 
 int Ans::get_min_distance(int S, int T)
 {
-	return tree.search_catch(S, T);
+	return tree.search_catch(S, T);  // search_catch is better than search
 }
 
 
@@ -2707,6 +2707,7 @@ void Ans::output()
 	for(int i = 0; i < coordinate.size(); ++i)
 		cout << i << " " << coordinate[i].x << " " << coordinate[i].y << endl; 
 }
+
 /*void Ans::test()
 {
 	cout << "test begin" << endl;

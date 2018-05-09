@@ -16,11 +16,13 @@ using namespace std;
 struct timeval tv;
 long long ts, te;
 
-vector<vector<int>> permutations[5]; //全排列
+vector<vector<int> > permutations[5]; //全排列
 
 Ans ans;
 
 vector<Car> cars;
+
+int distance_matrix[6][6];
 
 string split_string(const string& s, const string& c)
 {
@@ -40,18 +42,9 @@ string split_string(const string& s, const string& c)
 	return ret[ret.size() - 1];
 }
 
-void init()
-{
-	//ans.init();
-	//ans.read();
-	//ans.build_tree();
-	ans.load();
-
-	for(int i = 0; i < 5; ++i)	build_permutations(0, i);
-}
 
 bool is_access[5];
-int min_distance;
+//int min_distance;
 vector<int> positions;
 
 void build_permutations(int num, int max)
@@ -64,13 +57,13 @@ void build_permutations(int num, int max)
 	}
 	if(num == max)
 	{
-		vector<int> tmp = points;
+		vector<int> tmp = positions;
 		permutations[max].push_back(tmp);
 
 	}
 	else
 	{
-		for(int i = 0; i < destinations.size(); ++i)
+		for(int i = 0; i < max; ++i)
 		{
 			if(!is_access[i])
 			{
@@ -84,6 +77,19 @@ void build_permutations(int num, int max)
 		}
 	}
 
+}
+
+
+void init()
+{
+	//ans.init();
+	//ans.read();
+	//ans.build_tree();
+	ans.load();
+
+	for(int i = 0; i < 5; ++i)	build_permutations(0, i);
+
+	for(int i = 0; i < 6; ++i) distance_matrix[i][i] = 0;
 }
 
 void read_cars()
@@ -130,6 +136,68 @@ void print_cars()
 
 
 
+int calculate_distance(vector<int> &destinations, int car_position, bool is_repeat = false)
+{
+	int min_distance = 2147483647;
+	int size = destinations.size();
+	//cout << size << endl;
+
+	if(!is_repeat)
+	{
+		for(int i = 1; i <= size; ++i)
+		{
+			distance_matrix[0][i] = ans.get_min_distance(car_position, destinations[i - 1]);
+
+			distance_matrix[i][0] = distance_matrix[0][i];
+		}
+
+		for(int i = 1; i <= size; ++i)
+		{
+			for(int j = i + 1; j <= size; ++j)
+			{
+				distance_matrix[i][j] = ans.get_min_distance(destinations[i - 1], destinations[j - 1]);
+				distance_matrix[j][i] = distance_matrix[i][j];
+			}
+		}
+	}
+
+	/*for(int i = 0; i <= size; ++i)
+	{
+		for(int j = 0; j <= size; ++j) cout << distance_matrix[i][j] << " ";
+		cout << endl;
+	}
+	*/
+
+
+	for(int i = 0; i < permutations[size].size(); ++i)
+	{
+		/*int distance = 0;
+		int current = car_position;
+		for(int j = 0; j < size; ++j)
+		{
+			distance += ans.get_min_distance(current, destinations[permutations[size][i][j]]);
+			current = destinations[permutations[size][i][j]];
+		}*/
+
+		int distance = 0;
+		if(size > 0)
+		{
+			distance = distance_matrix[0][permutations[size][i][0] + 1];
+			//int current = permutations[size][0][0] + 1;
+
+			for(int j = 1; j < size; ++j)
+			{
+				//cout << permutations[size][i][j - 1] + 1 << "  " << permutations[size][i][j] + 1 << endl;
+				distance += distance_matrix[permutations[size][i][j - 1] + 1][permutations[size][i][j] + 1];
+			}
+		}
+		if(distance < min_distance) min_distance = distance;
+	}
+
+//	cout << "min_distance: " << min_distance << endl;
+	return min_distance;
+}
+
 /*void calculate_distance(vector<int> &destinations, int car_position, int num)
 {
 	if(num == 0)
@@ -172,6 +240,11 @@ void print_cars()
 
 }*/
 
+
+bool is_cars(int current_position, int destination, int car_num)
+{
+	
+}
 int main()
 {
 	int current_position, destination; // node No
@@ -192,68 +265,95 @@ int main()
 
 	//ans.output();
 	
-	cout << "please input your position: ";
+	/*cout << "please input your position: ";
 	cin >> current_position;
 	cout << "please input your destination: ";
-	cin >> destination;
+	cin >> destination;*/
+	//current_position = 285434;
+//	destination = 227465;
 
-	for(int i = 0; i < 5; ++i)
+	/*for(int i = 0; i < 5; ++i)
 	{
 		cout << i << endl;
 		for(int j = 0; j < permutations[i].size(); ++j)
 		{
 			for(int k = 0; k < permutations[i][j].size(); ++k)
-				cout << permutations[i][j][k] << " "
+				cout << permutations[i][j][k] << " ";
 			cout << endl;
 		}
-	}
+	}*/
 	//cout << Euclidean_Dist(S, T) << endl;
 
-	//TIME_TICK_START
+	//long long cnt = 0;
+	TIME_TICK_START
 
-	
-	/*int cnt = 0;
-	for(int i = 0; i < 100000; ++i)
-	{
-		//cout << cars[i].position << " " << pos << endl;
-		double distance = Euclidean_Dist(cars[i].position, current_position);
-		if(distance < 11000)
+	for(int m = 0; m < 1; ++m){
+		//cout << m << endl;
+		current_position = 285434;//rand() % 338024;
+		destination = 227465;//rand() % 338024;
+		for(int i = 0; i < 100000; ++i) //
 		{
-			//cout << i << endl;
-			cnt ++;
-			if(cars[i].num < 4)  // 
+			//cout << cars[i].position << " " << pos << endl;
+			//TIME_TICK_START
+			double distance = Euclidean_Dist(cars[i].position, current_position);
+			//TIME_TICK_END
+			
+			//cnt += (te- ts);
+			if(distance < 11000)
 			{
-				int D2 = ans.get_min_distance(cars[i].position, current_position);
-				int D4 = ans.get_min_distance(current_position, destination);
-				
-				cars[i].passenger.push_back(destination);
+				//cout << i << endl;
+				//cnt ++;
+				if(cars[i].num < 4)  // 
+				{
+					//TIME_TICK_START
+					int D2 = ans.get_min_distance(cars[i].position, current_position);
+					int D4 = ans.get_min_distance(current_position, destination);
+					
+				//	TIME_TICK_END
+			
+					//cnt += (te- ts);
+					
+					
+					cars[i].passenger.push_back(destination);
 
 
-				//cout << cars[i].num << endl;
-				calculate_distance(cars[i].passenger, cars[i].position, 0);
-				int D3 = min_distance;
-				if(D3 - D4 > 10000) continue;
+					//cout << cars[i].num << endl;
+					//TIME_TICK_START
+					int  D3 = calculate_distance(cars[i].passenger, current_position);
+					//TIME_TICK_END
+					//cnt += (te- ts);
 
-				cars[i].passenger.pop_back();
 
-				calculate_distance(cars[i].passenger, cars[i].position, 0);
+					cars[i].passenger.pop_back();
+					if(D3 - D4 > 10000) continue;
+					
+					//cout << "haipa" << endl;
+					//TIME_TICK_START
 
-				int D1 = min_distance;
-				if(D2 + D3 - D1 > 10000) continue;
+					int D1 = calculate_distance(cars[i].passenger, cars[i].position); //, true);
+					//TIME_TICK_END
+					//cnt += (te- ts);
 
-				cout << i << endl;
 
-				
-				///cout << "min_distance = " << min_distance << endl;
-				//if(cnt > 10) return 0;
+					if(D2 + D3 - D1 > 10000) continue;
+
+
+					//cout << "car_num: "  << i << endl;
+					///cout << "min_distance = " << min_distance << endl;
+					//if(cnt > 10) return 0;
+
+				//	if(i > 10) break;
+				}
+
+
 			}
-
-
+			//break;
 		}
 	}
-	cout << cnt << endl;*/
-	//TIME_TICK_END
-	//TIME_TICK_PRINT("haipa");
+
+	//cout << cnt << endl;
+	TIME_TICK_END
+	TIME_TICK_PRINT("haipa");
 
 	//ans.test();
 	
