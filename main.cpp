@@ -142,15 +142,16 @@ int calculate_distance(vector<int> &destinations, int car_position, bool is_repe
 	int size = destinations.size();
 	//cout << size << endl;
 
+	
+	for(int i = 1; i <= size; ++i)
+	{
+		distance_matrix[0][i] = ans.get_min_distance(car_position, destinations[i - 1]);
+
+		distance_matrix[i][0] = distance_matrix[0][i];
+	}
+
 	if(!is_repeat)
 	{
-		for(int i = 1; i <= size; ++i)
-		{
-			distance_matrix[0][i] = ans.get_min_distance(car_position, destinations[i - 1]);
-
-			distance_matrix[i][0] = distance_matrix[0][i];
-		}
-
 		for(int i = 1; i <= size; ++i)
 		{
 			for(int j = i + 1; j <= size; ++j)
@@ -243,7 +244,7 @@ int calculate_distance(vector<int> &destinations, int car_position, bool is_repe
 
 bool is_cars(int current_position, int destination, int car_num)
 {
-	
+
 }
 int main()
 {
@@ -287,10 +288,10 @@ int main()
 	//long long cnt = 0;
 	TIME_TICK_START
 
-	for(int m = 0; m < 1; ++m){
+	for(int m = 0; m < 100; ++m){
 		//cout << m << endl;
-		current_position = 285434;//rand() % 338024;
-		destination = 227465;//rand() % 338024;
+		current_position = rand() % 338024;  //285434;
+		destination = rand() % 338024;  //227465;//
 		for(int i = 0; i < 100000; ++i) //
 		{
 			//cout << cars[i].position << " " << pos << endl;
@@ -307,7 +308,7 @@ int main()
 				{
 					//TIME_TICK_START
 					int D2 = ans.get_min_distance(cars[i].position, current_position);
-					int D4 = ans.get_min_distance(current_position, destination);
+					//int D4 = ans.get_min_distance(current_position, destination);
 					
 				//	TIME_TICK_END
 			
@@ -320,6 +321,8 @@ int main()
 					//cout << cars[i].num << endl;
 					//TIME_TICK_START
 					int  D3 = calculate_distance(cars[i].passenger, current_position);
+
+					int D4 = distance_matrix[0][cars[i].num + 1];
 					//TIME_TICK_END
 					//cnt += (te- ts);
 
@@ -330,7 +333,9 @@ int main()
 					//cout << "haipa" << endl;
 					//TIME_TICK_START
 
-					int D1 = calculate_distance(cars[i].passenger, cars[i].position); //, true);
+					int D1 = calculate_distance(cars[i].passenger, cars[i].position, true);
+
+					//int D2 = distance_matrix[]
 					//TIME_TICK_END
 					//cnt += (te- ts);
 
