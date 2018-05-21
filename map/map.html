@@ -8,9 +8,9 @@
 		#allmap{height:500px;width:100%;}
 		#r-result{width:100%;}
 	</style>
-	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Yzv3lRH22tOyUvbqoAIWEKAidtXTuW5M" async="async"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Yzv3lRH22tOyUvbqoAIWEKAidtXTuW5M"  ></script>
 				                      
-	<title>haipa</title>
+	<title>map</title>
 </head>
 <body>
 	<div id="allmap"></div>
@@ -21,10 +21,10 @@
 	var map = new BMap.Map("allmap");
 	var point = new BMap.Point(116.404, 39.915);
 	map.centerAndZoom(point, 12);
-	
+	map.enableScrollWheelZoom(true);
 	
 	map.addOverlay(new BMap.Marker(new BMap.Point(116.404, 39.915)));    	
 	map.addOverlay(new BMap.Marker(new BMap.Point(130.404, 40.915))); 
 	
-	map.enableScrollWheelZoom(true);
+	
 </script>

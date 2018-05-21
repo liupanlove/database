@@ -1,19 +1,22 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include<QWebEngineView>
+
 #include<QUrl>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    //
-    QWebEngineView * view = new QWebEngineView();
-    view->setUrl(QUrl("file:///home/liupan15/Desktop/database/database/map/test.html"));
-    view->show();
 
-    view->setUrl(QUrl("file:///home/liupan15/Desktop/database/database/map/map.html"));
-    view->show();
+    vector<coor> test;
+
+    //view->setUrl(QUrl("file:///C:/Users/19420/Desktop/database_bighomework/database/map/test.html"));
+    //view->show();
+
+    //view->setUrl(QUrl("file:///C:/Users/19420/Desktop/database_bighomework/database/map/map.html"));
+    //view->show();
     MainWindow w;
+    //test = w.read_file();
+   // w.write_file(test);
     w.show();
 
 
